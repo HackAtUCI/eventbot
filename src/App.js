@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import MessageSender from './components/messageSender/messageSender'
 import TokenInput from './components/tokenInput/tokenInput';
-import {loadWorkspace} from './helpers/slackHelpers'
+import {loadWorkspace, validateToken} from './helpers/slackHelpers'
 
 const { WebClient } = require('@slack/web-api');
 
@@ -12,16 +12,12 @@ function App() {
   const [workspace, setWorkspace] = useState(); 
 
   useEffect(() => {
-    // Save Slack token to local storage for future use
     if (token) {
-      loadWorkspace(slackClient).then(workspace => {
-        setWorkspace(workspace)
-        localStorage.setItem('slackToken', token);
-      }).catch(err => {
-        // If token was invalid, reset the state
-        setToken()
-        alert(err)
-      })
+      // Save Slack token to local storage for future use
+      localStorage.setItem('slackToken', token);
+
+      // Login with new token
+      login()
     } else {
       localStorage.removeItem('slackToken');
     }
@@ -31,10 +27,25 @@ function App() {
   const slackClient = new WebClient(token);
 
   // Logout
-  // Clear token and team information
+  // Clear token and workspace information
   const logout = () => {
     setToken();
     setWorkspace();
+  }
+
+  // Login
+  // Validate token and load workspace information
+  // If token is invalid, an alert will be shown
+  const login = () => {
+    validateToken(slackClient).then(() => {
+      loadWorkspace(slackClient).then(workspace => {
+        setWorkspace(workspace)
+      })
+    }).catch(err => {
+      // Token was invalid, reset and display alert
+      setToken()
+      alert(err)
+    })
   }
 
   const saveToken = event => {

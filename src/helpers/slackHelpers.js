@@ -1,9 +1,10 @@
-const loadWorkspace = async (slackClient) => {
-    // Verify that the token is valid before proceeding
+const validateToken = async (slackClient) => {
     await slackClient.auth.test().catch(err => {
         return Promise.reject(`Invalid token: '${slackClient.token}'`)
     })
-    
+}
+
+const loadWorkspace = async (slackClient) => {    
     const [channels, team] = await Promise.all([
         // Load channels from Slack Workspace
         // Set selected channel to the first channel in the list
@@ -27,4 +28,4 @@ const loadWorkspace = async (slackClient) => {
     return {...channels, ...team }
 }
 
-export {loadWorkspace}
+export {loadWorkspace, validateToken}
