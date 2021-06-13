@@ -2,19 +2,25 @@ import './App.css';
 import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import MessageSender from './components/messageSender/messageSender'
+import {loadWorkspace} from './helpers/slackHelpers'
 
 const { WebClient } = require('@slack/web-api');
 
 function App() {
   const [token, setToken] = useState(localStorage['slackToken']);
-  const [channels, setChannels] = useState([]);
-  const [team, setTeam] = useState();
+  const [workspace, setWorkspace] = useState(); 
 
   useEffect(() => {
     // Save Slack token to local storage for future use
     if (token) {
-      localStorage.setItem('slackToken', token);
-      loadWorkspaceData();
+      loadWorkspace(slackClient).then(workspace => {
+        setWorkspace(workspace)
+        localStorage.setItem('slackToken', token);
+      }).catch(err => {
+        // If token was invalid, reset the state
+        setToken()
+        alert(err)
+      })
     } else {
       localStorage.removeItem('slackToken');
     }
@@ -27,34 +33,7 @@ function App() {
   // Clear token and team information
   const logout = () => {
     setToken();
-    setTeam();
-  }
-
-  const loadWorkspaceData = () => {
-    // Verify that the token is valid before proceeding
-    slackClient.auth.test()
-      .catch(err => {
-        alert(`Invalid token: '${token}'`)
-        setToken()
-        return Promise.reject()
-      })
-      .then(() => {
-          // Load channels from Slack Workspace
-          // Set selected channel to the first channel in the list
-          slackClient.conversations.list()
-          .then(result => {
-            const channels = result.channels
-              .map(channel => ({id: channel.id, name: channel.name}))
-              .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1);
-            setChannels(channels);
-          })
-
-          // Load team information
-          slackClient.team.info()
-            .then(result => {
-              setTeam({name: result.team.name, icon: result.team.icon.image_230});
-            });
-      });
+    setWorkspace();
   }
 
   const saveToken = event => {
@@ -73,10 +52,10 @@ function App() {
           </form>
         </div>
       }
-      {team &&
+      {workspace &&
         <div>
-          <NavBar team={team} onLogout={logout}/>
-          <MessageSender channels={channels} slackClient={slackClient}/>
+          <NavBar team={workspace.team} onLogout={logout}/>
+          <MessageSender channels={workspace.channels} slackClient={slackClient}/>
         </div>
       }
     </div>

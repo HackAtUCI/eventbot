@@ -6,7 +6,7 @@ function MessageSender(props) {
   const { channels, slackClient } = props;
 
   const [message, setMessage] = useState('');
-  const [channel, setChannel] = useState(channels[0].id || '');
+  const [channel, setChannel] = useState(channels[0].id);
 
   const sendMessage = event => {
     event.preventDefault();
