@@ -1,5 +1,6 @@
 import './App.css';
 import {useEffect, useState} from 'react';
+import NavBar from './components/navbar/navbar';
 
 const { WebClient } = require('@slack/web-api');
 
@@ -14,14 +15,21 @@ function App() {
     // Save Slack token to local storage for future use
     if (token) {
       localStorage.setItem('slackToken', token);
-      loadWorkspaceData()
+      loadWorkspaceData();
     } else {
-      localStorage.removeItem('slackToken')
+      localStorage.removeItem('slackToken');
     }
   }, [token])
 
   // Create WebClient to interface with Slack API
   const slackClient = new WebClient(token);
+
+  // Logout
+  // Clear token and team information
+  const logout = () => {
+    setToken();
+    setTeam();
+  }
 
   const loadWorkspaceData = () => {
     // Verify that the token is valid before proceeding
@@ -80,6 +88,7 @@ function App() {
       }
       {team &&
         <div>
+          <NavBar team={team} onLogout={logout}/>
           <h1>Send message to #bot-playground</h1>
           <form onSubmit={sendMessage}>
             <select value={channel} onChange={event => {setChannel(event.target.value)}}>
