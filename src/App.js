@@ -1,13 +1,12 @@
 import './App.css';
 import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
+import MessageSender from './components/messageSender/messageSender'
 
 const { WebClient } = require('@slack/web-api');
 
 function App() {
   const [token, setToken] = useState(localStorage['slackToken']);
-  const [message, setMessage] = useState('');
-  const [channel, setChannel] = useState('');
   const [channels, setChannels] = useState([]);
   const [team, setTeam] = useState();
 
@@ -48,7 +47,6 @@ function App() {
               .map(channel => ({id: channel.id, name: channel.name}))
               .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1);
             setChannels(channels);
-            setChannel(channels[0].id);
           })
 
           // Load team information
@@ -62,17 +60,6 @@ function App() {
   const saveToken = event => {
     event.preventDefault();
     setToken(event.target[0].value);
-  }
-
-  const sendMessage = event => {
-    event.preventDefault();
-
-    slackClient.chat.postMessage({
-      text: message,
-      channel: channel,
-    })
-
-    setMessage('');
   }
 
   return (
@@ -89,16 +76,7 @@ function App() {
       {team &&
         <div>
           <NavBar team={team} onLogout={logout}/>
-          <h1>Send message to #bot-playground</h1>
-          <form onSubmit={sendMessage}>
-            <select value={channel} onChange={event => {setChannel(event.target.value)}}>
-              {channels.map((channel, i) =>
-                <option key={i} value={channel.id}>{channel.name}</option>
-              )}
-            </select>
-            <input type="text" value={message} onChange={event => {setMessage(event.target.value)}} />
-            <input type="submit" />
-          </form>
+          <MessageSender channels={channels} slackClient={slackClient}/>
         </div>
       }
     </div>
