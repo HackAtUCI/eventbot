@@ -2,6 +2,7 @@ import './App.css';
 import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import MessageSender from './components/messageSender/messageSender'
+import TokenInput from './components/tokenInput/tokenInput';
 import {loadWorkspace} from './helpers/slackHelpers'
 
 const { WebClient } = require('@slack/web-api');
@@ -44,13 +45,7 @@ function App() {
   return (
     <div className="App">
       {!token &&
-        <div>
-          <h1>Enter Slack Token</h1>
-          <form onSubmit={saveToken}>
-            <input type="password" />
-            <input type="submit" />
-          </form>
-        </div>
+        <TokenInput onSubmit={saveToken} />
       }
       {workspace &&
         <div>
