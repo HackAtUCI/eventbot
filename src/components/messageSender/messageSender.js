@@ -1,13 +1,14 @@
 import './messageSender.css';
 
 import {postMessage} from '../../helpers/slackHelpers';
-import {useState, useRef} from 'react';
+import AppContext from '../../AppContext';
+import {useState, useRef, useContext} from 'react';
 
-function MessageSender(props) {
-  const { channels, slackClient } = props;
+function MessageSender() {
+  const { workspace: {channels} = {}, slackClient } = useContext(AppContext);
 
   const messageTextField = useRef(null);
-  const [channel, setChannel] = useState(channels[0].id);
+  const [channel, setChannel] = useState(channels && channels[0].id);
 
   const sendMessage = event => {
     event.preventDefault();
@@ -26,16 +27,15 @@ function MessageSender(props) {
 
   return (
     <div>
-        <h1>Send message</h1>
-          <form onSubmit={sendMessage}>
-            <select value={channel} onChange={event => {setChannel(event.target.value)}}>
-              {channels.map((channel, i) =>
-                <option key={i} value={channel.id}>{channel.name}</option>
-              )}
-            </select>
-            <textarea type="text" ref={messageTextField} />
-            <input type="submit" />
-          </form>
+        <form onSubmit={sendMessage}>
+        <select value={channel} onChange={event => {setChannel(event.target.value)}}>
+            {channels && channels.map((channel, i) =>
+            <option key={i} value={channel.id}>{channel.name}</option>
+            )}
+        </select>
+        <textarea type="text" ref={messageTextField} />
+        <input type="submit" />
+        </form>
     </div>
     
   );
