@@ -1,7 +1,8 @@
 import './App.css';
 import {
   Route,
-  useHistory
+  useHistory,
+  useLocation
 } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
@@ -17,6 +18,7 @@ function App() {
   const [token, setToken] = useState(localStorage['slackToken']);
   const [workspace, setWorkspace] = useState(); 
   const history = useHistory();
+  const location = useLocation();
   
   // Create WebClient to interface with Slack API
   const slackClient = new WebClient(token); 
@@ -48,7 +50,9 @@ function App() {
     try {
       await validateToken(slackClient);
       setWorkspace(await loadWorkspace(slackClient));
-      history.push("/")
+      if (location.pathname === '/login') {
+        history.push("/")
+      }
     } catch(err) {
       // Token was invalid, reset and display alert
       setToken()
