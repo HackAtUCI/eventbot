@@ -3,7 +3,7 @@ import {
   Route,
   useHistory
 } from 'react-router-dom';
-import {useEffect, useState, createContext} from 'react';
+import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import AppContext from './AppContext';
 import TokenInput from './components/tokenInput/tokenInput';
@@ -48,6 +48,7 @@ function App() {
     try {
       await validateToken(slackClient);
       setWorkspace(await loadWorkspace(slackClient));
+      history.push("/")
     } catch(err) {
       // Token was invalid, reset and display alert
       setToken()
@@ -58,16 +59,20 @@ function App() {
   const saveToken = event => {
     event.preventDefault();
     setToken(event.target[0].value);
-    history.push("/")
+    event.target[0].value = '';
   }
 
   return (
-    <AppContext.Provider value={{slackClient, workspace}}>
-      <NavBar onLogout={logout}/>
-      <Route exact path="/" component={Home} />
-      <Route path="/sendMessage" component={SendMessage} />
-      <Route path="/login" render={() => <TokenInput onSubmit={saveToken} />} />
-    </AppContext.Provider>
+    <div className="App">
+      <AppContext.Provider value={{slackClient, workspace}}>
+        <NavBar onLogout={logout}/>
+        <div className="content">
+          <Route exact path="/" component={Home} />
+          <Route path="/sendMessage" component={SendMessage} />
+          <Route path="/login" render={() => <TokenInput onSubmit={saveToken} />} />
+        </div>
+      </AppContext.Provider>
+    </div>
   );
 }
 
