@@ -9,11 +9,14 @@ function NavBar(props) {
   const { workspace } = useContext(AppContext)
 
   return (
-    <div>
+    <div className="nav-bar">
+        <h1>EventBot</h1>
         {workspace && 
             <div>
-                {workspace.team.name}
-                <button onClick={onLogout}>Log Out</button>
+                <div className="workspace">
+                    <h3>{workspace.team.name}</h3>
+                    <button onClick={onLogout}>Log Out</button>
+                </div>
                 <ul>
                     <li><NavLink to='/'>Home</NavLink></li>
                     <li><NavLink to='/sendMessage'>Send Message</NavLink></li>
