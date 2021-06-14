@@ -26,15 +26,17 @@ function MessageSender() {
   }
 
   return (
-    <div>
+    <div className="message-sender">
         <form onSubmit={sendMessage}>
-        <select value={channel} onChange={event => {setChannel(event.target.value)}}>
-            {channels && channels.map((channel, i) =>
-            <option key={i} value={channel.id}>{channel.name}</option>
-            )}
-        </select>
-        <textarea type="text" ref={messageTextField} />
-        <input type="submit" />
+            <textarea type="text" ref={messageTextField} />
+            <div>
+                <select value={channel} onChange={event => {setChannel(event.target.value)}}>
+                    {channels && channels.map((channel, i) =>
+                    <option key={i} value={channel.id}>{channel.name}</option>
+                    )}
+                </select>
+                <input type="submit" />
+            </div>
         </form>
     </div>
     

@@ -1,0 +1,11 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+textarea {
+    height: 100px;
+}
