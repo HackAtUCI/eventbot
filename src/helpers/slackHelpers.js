@@ -1,3 +1,10 @@
+const postMessage = (slackClient, message, channel) => {
+    slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
+        console.error(err, {channel, message});
+        alert('Unable to post message. Review the error message in the console.');
+    })
+}
+
 const validateToken = async (slackClient) => {
     await slackClient.auth.test().catch(err => {
         return Promise.reject(`Invalid token: '${slackClient.token}'`)
@@ -28,4 +35,4 @@ const loadWorkspace = async (slackClient) => {
     return {...channels, ...team }
 }
 
-export {loadWorkspace, validateToken}
+export {loadWorkspace, postMessage, validateToken}

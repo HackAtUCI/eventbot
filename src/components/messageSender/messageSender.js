@@ -1,21 +1,27 @@
 import './messageSender.css';
 
-import {useState} from 'react';
+import {postMessage} from '../../helpers/slackHelpers';
+import {useState, useRef} from 'react';
 
 function MessageSender(props) {
   const { channels, slackClient } = props;
 
-  const [message, setMessage] = useState('');
+  const messageTextField = useRef(null);
   const [channel, setChannel] = useState(channels[0].id);
 
   const sendMessage = event => {
     event.preventDefault();
-    slackClient.chat.postMessage({ text: message, channel: channel })
-        .catch((err) => {
-            alert('Unable to post message. Review the error message in the console.')
-            console.error(err, {channel});
-        })
-    setMessage('');
+
+    // Get message from textarea
+    // Return early if message is blank
+    let message = messageTextField.current.value;
+    if (!message) { return }
+
+    // Post the message to slack
+    postMessage(slackClient, message, channel);
+    
+    // Reset the textarea
+    messageTextField.current.value = '';
   }
 
   return (
@@ -27,7 +33,7 @@ function MessageSender(props) {
                 <option key={i} value={channel.id}>{channel.name}</option>
               )}
             </select>
-            <input type="text" value={message} onChange={event => {setMessage(event.target.value)}} />
+            <textarea type="text" ref={messageTextField} />
             <input type="submit" />
           </form>
     </div>
