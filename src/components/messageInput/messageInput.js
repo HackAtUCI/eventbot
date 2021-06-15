@@ -1,24 +1,27 @@
-import './messageSender.css';
+import './messageInput.css';
 
 import AppContext from '../../AppContext';
-import {useState, useRef, useContext} from 'react';
+import {useRef, useContext} from 'react';
 
-function MessageSender() {
-  const { workspace: {channels} = {}, slackClient } = useContext(AppContext);
-
+function MessageInput(props) {
+  const {submitAction} = props;
+  
+  const { workspace: {channels} = {} } = useContext(AppContext);
+  
   const messageTextField = useRef(null);
-  const [channel, setChannel] = useState(channels && channels[0].id);
+  const selectedChannel = useRef(null)
 
-  const sendMessage = event => {
+  const formSubmitted = event => {
     event.preventDefault();
 
-    // Get message from textarea
-    // Return early if message is blank
+    // Get message and channel
+    // Return early if either is blank
     let message = messageTextField.current.value;
+    let channel = selectedChannel.current.value
     if (!message) { return }
 
-    // Post the message to slack
-    slackClient.postMessage(message, channel);
+    // Handle action
+    submitAction(message, channel);
     
     // Reset the textarea
     messageTextField.current.value = '';
@@ -26,10 +29,10 @@ function MessageSender() {
 
   return (
     <div className="message-sender">
-        <form onSubmit={sendMessage}>
+        <form onSubmit={formSubmitted}>
             <textarea type="text" ref={messageTextField} />
             <div>
-                <select value={channel} onChange={event => {setChannel(event.target.value)}}>
+                <select value={channels && channels[0].id} ref={selectedChannel}>
                     {channels && channels.map((channel, i) =>
                     <option key={i} value={channel.id}>{channel.name}</option>
                     )}
@@ -42,4 +45,4 @@ function MessageSender() {
   );
 }
 
-export default MessageSender;
+export default MessageInput;
