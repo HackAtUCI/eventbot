@@ -32,7 +32,7 @@ function MessageInput(props) {
         <form onSubmit={formSubmitted}>
             <textarea type="text" ref={messageTextField} />
             <div>
-                <select value={channels && channels[0].id} ref={selectedChannel}>
+                <select defaultValue={channels ? channels[0].id : ''} ref={selectedChannel}>
                     {channels && channels.map((channel, i) =>
                     <option key={i} value={channel.id}>{channel.name}</option>
                     )}
