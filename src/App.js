@@ -11,6 +11,7 @@ import TokenInput from './components/tokenInput/tokenInput';
 import SlackClient from './helpers/slack';
 import SendMessage from './views/sendMessage';
 import Home from './views/home';
+import ScheduleMessage from './views/scheduleMessage';
 
 const { WebClient } = require('@slack/web-api');
 
@@ -73,6 +74,7 @@ function App() {
         <div className="content">
           <Route exact path="/" component={Home} />
           <Route path="/sendMessage" component={SendMessage} />
+          <Route path="/scheduleMessage" component={ScheduleMessage} />
           <Route path="/login" render={() => <TokenInput onSubmit={saveToken} />} />
         </div>
       </AppContext.Provider>

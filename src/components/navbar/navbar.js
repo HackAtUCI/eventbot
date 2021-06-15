@@ -20,6 +20,7 @@ function NavBar(props) {
                 <ul>
                     <li><NavLink to='/'>Home</NavLink></li>
                     <li><NavLink to='/sendMessage'>Send Message</NavLink></li>
+                    <li><NavLink to='/scheduleMessage'>Schedule Message</NavLink></li>
                 </ul>
             </div>
         }

@@ -10,6 +10,18 @@ class SlackClient {
         })
     }
 
+    async getScheduledMessages() {
+        const resp = await this.slackClient.chat.scheduledMessages.list();
+        return resp.scheduled_messages;
+    }
+
+    deleteScheduledMessage(scheduled_message_id, channel) {
+        this.slackClient.chat.deleteScheduledMessage({scheduled_message_id, channel}).catch((err) => {
+            console.error(err, {scheduled_message_id, channel});
+            alert('Unable to delete scheduled message. Review the error message in the console.');
+        });
+    }
+
     async validateToken() {
         await this.slackClient.auth.test().catch(err => {
             return Promise.reject(`Invalid token: '${this.slackClient.token}'`)
