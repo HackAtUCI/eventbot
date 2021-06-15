@@ -10,6 +10,13 @@ class SlackClient {
         })
     }
 
+    scheduleMessage(text, channel, post_at) {
+        this.slackClient.chat.scheduleMessage({ channel, text, post_at }).catch((err) => {
+            console.error(err, {channel, text, post_at});
+            alert('Unable to schedule message. Review the error message in the console.');
+        })
+    }
+
     async getScheduledMessages() {
         const resp = await this.slackClient.chat.scheduledMessages.list();
         return resp.scheduled_messages;

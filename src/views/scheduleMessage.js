@@ -1,13 +1,19 @@
-import { useContext, useEffect, useState } from 'react';
+import MessageInput from '../components/messageInput/messageInput'
+import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
 
 function ScheduleMessage() {
     const {slackClient} = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
+    const timeInput = useRef(null)
     
     useEffect(()=>{
         loadScheduledMessages();
     }, [])
+
+    const scheduleMessage = (message, channel) => {
+        slackClient.scheduleMessage(message, channel, timeInput.current.value);
+    }
 
     const loadScheduledMessages = () => {
         slackClient.getScheduledMessages().then(messages => {
@@ -26,11 +32,14 @@ function ScheduleMessage() {
     return (
         <div>
             <h1>Schedule message</h1>
+            <input ref={timeInput} placeholder="Epoch time"/>
+            <MessageInput submitAction={scheduleMessage} />
+            <h3>Scheduled Messages</h3>
             {scheduledMessages.map(message => {
                 const {id, channel_id, post_at, text} = message;
 
                 return (
-                    <div>
+                    <div key={id}>
                         <div>
                             <i>{post_at}</i> in {channel_id}
                         </div>
