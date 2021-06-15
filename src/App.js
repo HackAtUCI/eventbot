@@ -8,7 +8,7 @@ import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import AppContext from './AppContext';
 import TokenInput from './components/tokenInput/tokenInput';
-import {loadWorkspace, validateToken} from './helpers/slackHelpers'
+import SlackClient from './helpers/slack';
 import SendMessage from './views/sendMessage';
 import Home from './views/home';
 
@@ -21,7 +21,7 @@ function App() {
   const location = useLocation();
   
   // Create WebClient to interface with Slack API
-  const slackClient = new WebClient(token); 
+  const slackClient = new SlackClient(new WebClient(token)); 
 
   useEffect(() => {
     if (token) {
@@ -48,8 +48,8 @@ function App() {
   // If token is invalid, an alert will be shown
   const login = async () => {
     try {
-      await validateToken(slackClient);
-      setWorkspace(await loadWorkspace(slackClient));
+      await slackClient.validateToken();
+      setWorkspace(await slackClient.loadWorkspace());
       if (location.pathname === '/login') {
         history.push("/")
       }

@@ -1,6 +1,5 @@
 import './messageSender.css';
 
-import {postMessage} from '../../helpers/slackHelpers';
 import AppContext from '../../AppContext';
 import {useState, useRef, useContext} from 'react';
 
@@ -19,7 +18,7 @@ function MessageSender() {
     if (!message) { return }
 
     // Post the message to slack
-    postMessage(slackClient, message, channel);
+    slackClient.postMessage(message, channel);
     
     // Reset the textarea
     messageTextField.current.value = '';
