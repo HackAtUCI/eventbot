@@ -1,3 +1,5 @@
+import './scheduleMessage.css';
+
 import MessageInput from '../components/messageInput/messageInput'
 import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
@@ -33,19 +35,28 @@ function ScheduleMessage() {
             <input ref={timeInput} placeholder="Epoch time"/>
             <MessageInput submitAction={scheduleMessage} />
             <h3>Scheduled Messages</h3>
-            {scheduledMessages.map(message => {
-                const {id, channel_id, post_at, text} = message;
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Channel</th>
+                    <th>Post At</th>
+                    <th>Text</th>
+                    <th>Delete Message</th>
+                </tr>
+                {scheduledMessages.map(message => {
+                    const {id, channel_id, post_at, text} = message;
 
-                return (
-                    <div key={id}>
-                        <div>
-                            <i>{post_at}</i> in {channel_id}
-                        </div>
-                        <p>{text}</p>
-                        <button onClick={()=>{deleteMessage(id, channel_id)}}>Delete</button>
-                    </div>
-                )
-            })}        
+                    return (
+                        <tr key={id}>
+                            <td>{id}</td>
+                            <td>{channel_id}</td>
+                            <td>{post_at}</td>
+                            <td><pre>{text}</pre></td>
+                            <td><button onClick={()=>{deleteMessage(id, channel_id)}}>Delete</button></td>
+                        </tr>
+                    )
+                })}        
+            </table>
         </div>
     );
 }
