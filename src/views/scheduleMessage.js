@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
 
 function ScheduleMessage() {
-    const {slackClient} = useContext(AppContext);
+    const {slackClient, workspace} = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
     const timeInput = useRef(null)
     
@@ -49,7 +49,7 @@ function ScheduleMessage() {
                     return (
                         <tr key={id}>
                             <td>{id}</td>
-                            <td>{channel_id}</td>
+                            <td>#{workspace && workspace.channels[channel_id].name}</td>
                             <td>{post_at}</td>
                             <td><pre>{text}</pre></td>
                             <td><button onClick={()=>{deleteMessage(id, channel_id)}}>Delete</button></td>

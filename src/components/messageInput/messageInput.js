@@ -6,8 +6,10 @@ import {useRef, useContext} from 'react';
 function MessageInput(props) {
   const {submitAction} = props;
   
-  const { workspace: {channels} = {} } = useContext(AppContext);
-  
+  const { workspace } = useContext(AppContext);
+  const channels = workspace ? Object.values(workspace.channels).map(channel => { 
+    return {...channel}
+  }) : null;
   const messageTextField = useRef(null);
   const selectedChannel = useRef(null)
 

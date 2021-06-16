@@ -43,7 +43,11 @@ class SlackClient {
                 .then(result => {
                     const channels = result.channels
                     .map(channel => ({id: channel.id, name: channel.name}))
-                    .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1);
+                    .sort((c1, c2) => (c1.name > c2.name) ? 1 : -1)
+                    .reduce((channelDict, channel) => {
+                        channelDict[channel.id] = {...channel};
+                        return channelDict;
+                    }, {});
                     return {channels};
                 }
             ),
