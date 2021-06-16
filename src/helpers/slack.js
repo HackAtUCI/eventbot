@@ -10,8 +10,8 @@ class SlackClient {
         })
     }
 
-    scheduleMessage(text, channel, post_at) {
-        this.slackClient.chat.scheduleMessage({ channel, text, post_at }).catch((err) => {
+    async scheduleMessage(text, channel, post_at) {
+        await this.slackClient.chat.scheduleMessage({ channel, text, post_at }).catch((err) => {
             console.error(err, {channel, text, post_at});
             alert('Unable to schedule message. Review the error message in the console.');
         })
@@ -22,8 +22,8 @@ class SlackClient {
         return resp.scheduled_messages;
     }
 
-    deleteScheduledMessage(scheduled_message_id, channel) {
-        this.slackClient.chat.deleteScheduledMessage({scheduled_message_id, channel}).catch((err) => {
+    async deleteScheduledMessage(scheduled_message_id, channel) {
+        await this.slackClient.chat.deleteScheduledMessage({scheduled_message_id, channel}).catch((err) => {
             console.error(err, {scheduled_message_id, channel});
             alert('Unable to delete scheduled message. Review the error message in the console.');
         });

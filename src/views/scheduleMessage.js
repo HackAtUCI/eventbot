@@ -11,21 +11,19 @@ function ScheduleMessage() {
         loadScheduledMessages();
     }, [])
 
-    const scheduleMessage = (message, channel) => {
-        slackClient.scheduleMessage(message, channel, timeInput.current.value);
-    }
-
     const loadScheduledMessages = () => {
         slackClient.getScheduledMessages().then(messages => {
             setScheduledMessages(messages);
         })
     }
 
+    const scheduleMessage = async (message, channel) => {
+        await slackClient.scheduleMessage(message, channel, timeInput.current.value);
+        loadScheduledMessages();
+    }
+
     const deleteMessage = async (messageId, channelId) => {
-        slackClient.deleteScheduledMessage(messageId, channelId);
-        
-        // Note this is a race condition, since we don't wait for the delete to finsih
-        // TODO: wait for deleteScheduleMessage to finish
+        await slackClient.deleteScheduledMessage(messageId, channelId);
         loadScheduledMessages();
     }
 
