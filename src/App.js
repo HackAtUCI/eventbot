@@ -17,13 +17,12 @@ const { WebClient } = require('@slack/web-api');
 
 function App() {
   const [token, setToken] = useState(localStorage['slackToken']);
+  const [isLoading, setIsLoading] = useState(true);
+  const [slackClient, setSlackClient] = useState();
   const [workspace, setWorkspace] = useState(); 
   const history = useHistory();
   const location = useLocation();
   
-  // Create WebClient to interface with Slack API
-  const slackClient = new SlackClient(new WebClient(token)); 
-
   useEffect(() => {
     if (token) {
       // Save Slack token to local storage for future use
@@ -49,8 +48,16 @@ function App() {
   // If token is invalid, an alert will be shown
   const login = async () => {
     try {
-      await slackClient.validateToken();
+      // Create WebClient to interface with Slack API
+      const slackClient = new SlackClient(new WebClient(token)); 
+      await slackClient.init()
+
+      // Update the states
+      setSlackClient(slackClient)
       setWorkspace(await slackClient.loadWorkspace());
+      setIsLoading(false);
+
+      // If on the login page, redirect home
       if (location.pathname === '/login') {
         history.push("/")
       }
@@ -69,7 +76,7 @@ function App() {
 
   return (
     <div className="App">
-      <AppContext.Provider value={{slackClient, workspace}}>
+      <AppContext.Provider value={{slackClient, workspace, isLoading}}>
         <NavBar onLogout={logout}/>
         <div className="content">
           <Route exact path="/" component={Home} />

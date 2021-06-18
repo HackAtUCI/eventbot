@@ -3,8 +3,15 @@ class SlackClient {
         this.slackClient = webclient;
     }
 
-    postMessage(message, channel) {
-        this.slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
+    async init() {
+        const botInfo = await this.validateToken();
+        this.userId = botInfo.user_id;
+
+        this.messageHistoryId = await this.getMessageHistoryChannel();
+    }
+
+    async postMessage(message, channel) {
+        return await this.slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
             console.error(err, {channel, message});
             alert('Unable to post message. Review the error message in the console.');
         })
@@ -29,10 +36,29 @@ class SlackClient {
         });
     }
 
+    async getMessageHistoryChannel() {
+        // Get a list of all DM conversations
+        const resp = await this.slackClient.conversations.list({types: "im"})
+
+        // Reduce that list to the channel id of the conversation with its own id
+        var messageHistoryId = resp.channels.reduce((val, convo) => {
+            return convo.user === this.userId ? convo.id : val
+        }, null);
+        
+        // If the conversation with itself has not started yet,
+        // Create the conversation and save the channel id
+        if (!messageHistoryId) {
+            messageHistoryId = (await this.postMessage("Starting message history", this.userId)).channel;
+        }
+
+        return messageHistoryId
+    }
+
     async validateToken() {
-        await this.slackClient.auth.test().catch(err => {
-            return Promise.reject(`Invalid token: '${this.slackClient.token}'`)
-        })
+        return await this.slackClient.auth.test()
+            .catch(err => {
+                return Promise.reject(`Invalid token: '${this.slackClient.token}'`)
+            })
     }
 
     async loadWorkspace() {    
