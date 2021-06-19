@@ -12,6 +12,7 @@ import SlackClient from './helpers/slack';
 import SendMessage from './views/sendMessage';
 import Home from './views/home';
 import ScheduleMessage from './views/scheduleMessage';
+import EditMessage from './views/editMessage';
 
 const { WebClient } = require('@slack/web-api');
 
@@ -82,6 +83,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/sendMessage" component={SendMessage} />
           <Route path="/scheduleMessage" component={ScheduleMessage} />
+          <Route path="/editMessage" component={EditMessage} />
           <Route path="/login" render={() => <TokenInput onSubmit={saveToken} />} />
         </div>
       </AppContext.Provider>

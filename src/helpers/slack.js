@@ -10,11 +10,16 @@ class SlackClient {
         this.messageHistoryId = await this.getMessageHistoryChannel();
     }
 
-    async postMessage(message, channel) {
-        return await this.slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
+    async postMessage(message, channel, log=true) {
+        const resp = await this.slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
             console.error(err, {channel, message});
-            alert('Unable to post message. Review the error message in the console.');
+            alert(err + "\n\nSee the full error message in the console.");
         })
+
+        // Save the message to it's private DMs
+        if (log) { this.saveMessageDetails(resp); }
+        
+        return resp
     }
 
     async scheduleMessage(text, channel, post_at) {
@@ -48,10 +53,43 @@ class SlackClient {
         // If the conversation with itself has not started yet,
         // Create the conversation and save the channel id
         if (!messageHistoryId) {
-            messageHistoryId = (await this.postMessage("Starting message history", this.userId)).channel;
+            messageHistoryId = (await this.postMessage("Starting message history", this.userId, false)).channel;
         }
 
         return messageHistoryId
+    }
+
+    async loadPrevMessages() {
+        // All previously sent messages are stored in the bot's DM with itself
+        // Load the messages from that private dm channel
+        const resp = await this.slackClient.conversations.history({channel: this.messageHistoryId});
+        
+        const prevMessages = resp.messages.reduce((messages, message) => {
+                try {
+                    const {text, ts} = message
+                    // For all messages in the channel,
+                    // convert them to JSON and add them to the list 
+                    messages.push({messageDetails: JSON.parse(text), log_ts: ts})
+                    return messages
+                } catch {
+                    // If the JSON.parse threw an error, ignore that message
+                    return messages
+                }
+            }, []);
+
+        return prevMessages
+    }
+
+    async saveMessageDetails(resp) {
+        const messageDetails = {
+            text: resp.message.text,
+            ts: resp.ts,
+            channel: resp.channel
+        }
+
+        // Send a message to it's own user id, containing the message details
+        // It can retrieve this message later by reading the conversation with itself
+        this.postMessage(JSON.stringify(messageDetails), this.userId, false);
     }
 
     async validateToken() {
