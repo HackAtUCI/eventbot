@@ -31,8 +31,9 @@ function EditMessage() {
     }
 
     const updateMessage = (oldMessageDetails) => {
+        const {messageDetails: {channel, ts}, log_ts } = oldMessageDetails
         const updatedText = selectedMessageTextArea.current.value;
-        //slackClient.editMessage(oldMessageDetails, updatedText);
+        slackClient.editMessage(channel, ts, updatedText, log_ts);
     }
 
     const deleteMessage = async (messageDetails) => {
@@ -57,13 +58,13 @@ function EditMessage() {
                 {prevMessages.map(message => {
                     const {
                         messageDetails: {channel, ts, text}, 
-                        logTs
+                        log_ts
                     } = message;
 
-                    const selected = selectedMessageId===logTs;
+                    const selected = selectedMessageId===log_ts;
 
                     return (
-                        <tr key={logTs}>
+                        <tr key={log_ts}>
                             <td>#{workspace && workspace.channels[channel].name}</td>
                             <td>{ts}</td>
                             <td>
@@ -76,11 +77,11 @@ function EditMessage() {
                             <td>
                                 { selected ?
                                     <div>
-                                        <button onClick={()=>{resetTextArea(text)}}>Reset</button>
+                                        <button onClick={()=>{resetTextArea(text)}}>Cancel</button>
                                         <button onClick={()=>{updateMessage(message)}}>Update</button>
                                     </div>
                                     :
-                                    <button onClick={()=>{editMessage(logTs)}}>Edit</button>
+                                    <button onClick={()=>{editMessage(log_ts)}}>Edit</button>
                                 }
                             </td>
                             <td><button onClick={()=>{deleteMessage(message)}}>Delete</button></td>

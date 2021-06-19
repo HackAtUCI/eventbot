@@ -92,6 +92,20 @@ class SlackClient {
         this.postMessage(JSON.stringify(messageDetails), this.userId, false);
     }
 
+    async editMessage(channel, ts, text, log_ts) {
+        this.slackClient.chat.update({channel, ts, text})
+        
+        if (log_ts) { 
+            // Update the message history DM to have the new text
+            const messageDetails = { text, ts, channel }
+            this.slackClient.chat.update({
+                channel: this.messageHistoryId, 
+                ts: log_ts, 
+                text: JSON.stringify(messageDetails)
+            }) 
+        }
+    }
+
     async validateToken() {
         return await this.slackClient.auth.test()
             .catch(err => {
