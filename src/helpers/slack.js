@@ -106,6 +106,14 @@ class SlackClient {
         }
     }
 
+    async deleteMessage(channel, ts, log_ts) {
+        this.slackClient.chat.delete({channel, ts})
+
+        if (log_ts) {
+            await this.slackClient.chat.delete({channel: this.messageHistoryId, ts: log_ts})
+        }
+    }
+
     async validateToken() {
         return await this.slackClient.auth.test()
             .catch(err => {

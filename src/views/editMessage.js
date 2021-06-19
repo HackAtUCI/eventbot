@@ -9,7 +9,6 @@ function EditMessage() {
     const [prevMessages, setPrevMessages] = useState([]);
     const [selectedMessageId, setSelectedMessageId] = useState('');
     const selectedMessageTextArea = useRef(null);
-    // const timeInput = useRef(null)
     
     useEffect(()=>{
         if (!isLoading) {loadPrevMessages()};
@@ -30,15 +29,18 @@ function EditMessage() {
         setSelectedMessageId('');
     }
 
-    const updateMessage = (oldMessageDetails) => {
-        const {messageDetails: {channel, ts}, log_ts } = oldMessageDetails
+    const updateMessage = async (oldMessageDetails) => {
+        const {messageDetails: {channel, ts}, log_ts } = oldMessageDetails;
         const updatedText = selectedMessageTextArea.current.value;
-        slackClient.editMessage(channel, ts, updatedText, log_ts);
+        await slackClient.editMessage(channel, ts, updatedText, log_ts);
+        setSelectedMessageId('')
+        loadPrevMessages();
     }
 
-    const deleteMessage = async (messageDetails) => {
-        //await slackClient.deleteScheduledMessage(messageId, channelId);
-        //loadPrevMessages();
+    const deleteMessage = async (oldMessageDetails) => {
+        const {messageDetails: {channel, ts}, log_ts } = oldMessageDetails;
+        await slackClient.deleteMessage(channel, ts, log_ts);
+        loadPrevMessages();
     }
 
     return (
