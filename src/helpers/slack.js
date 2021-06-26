@@ -33,7 +33,7 @@ class SlackClient {
         })
 
         // Save the message to it's private DMs
-        if (log) { this._logMessage(resp); }
+        if (log) { this._logMessage(resp.ts, resp.channel, resp.text); }
         
         return resp
     }
@@ -138,14 +138,12 @@ class SlackClient {
      * 
      * Format looks like {text: '{text}', ts: '{ts}', channel: '{channel}'}
      * 
-     * @param {any} resp - response from chat.post api call
+     * @param {string} ts - timestamp of the assosiated log message
+     * @param {string} channel - channel the message was sent in
+     * @param {string} text - text of the message
      */
-    async _logMessage(resp) {
-        const messageDetails = {
-            text: resp.message.text,
-            ts: resp.ts,
-            channel: resp.channel
-        }
+    async _logMessage(ts, channel, text) {
+        const messageDetails = { text, ts, channel }
 
         // Send a message to it's own user id, containing the message details
         // It can retrieve this message later by reading the conversation with itself
@@ -172,7 +170,7 @@ class SlackClient {
      * Removes message from the log
      * This should be called when a message is deleted
      * 
-     * @param {string} log_ts 
+     * @param {string} log_ts - the timestamp of the logged message (not when the actual message was posted)
      */
     async _deleteLogMessage(log_ts) {
         await this.slackClient.chat.delete({channel: this.logChannel, ts: log_ts})
