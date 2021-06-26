@@ -15,7 +15,7 @@ function EditMessage() {
     }, [isLoading])
 
     const loadPrevMessages = () => {
-        slackClient.loadPrevMessages().then(messages => {
+        slackClient.loadLog().then(messages => {
             setPrevMessages(messages)
         })
     }
