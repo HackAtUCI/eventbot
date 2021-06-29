@@ -33,7 +33,7 @@ class SlackClient {
         })
 
         // Save the message to it's private DMs
-        if (log) { this._logMessage(resp.ts, resp.channel, resp.text); }
+        if (log) { this._logMessage(resp.ts, resp.channel, resp.message.text); }
         
         return resp
     }
