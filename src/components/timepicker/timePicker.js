@@ -18,9 +18,8 @@ function TimePicker() {
     const [epochTime, setEpochTime] = useState(dateToEpoch(new Date()))
 
     const updateTime = (newTime) => {
-        if (newTime == null) {
-            // timepicker input has an 'X' that when clicked
-            // passes in null so reset the Date() to current time
+        if (newTime == null || isNaN(newTime)) {
+            // handles invalid input from datepicker and timeinput
             setDateTime(new Date())
             setEpochTime(dateToEpoch(new Date()))
         }
