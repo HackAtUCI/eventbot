@@ -4,7 +4,7 @@ import TimeInput from 'react-widgets/TimeInput';
 
 import { useState } from 'react';
 
-function epoch (date) {
+function dateToEpoch (date) {
     const timeInEpochMilliseconds = Date.parse(date)
 
     // return epoch time in seconds for Slack API
@@ -15,18 +15,18 @@ function epoch (date) {
 // React Widgets DatePicker and TimePicker
 function TimePicker() {
     const [dateTime, setDateTime] = useState(new Date())
-    const [epochTime, setEpochTime] = useState(epoch(new Date()))
+    const [epochTime, setEpochTime] = useState(dateToEpoch(new Date()))
 
     const updateTime = (newTime) => {
         if (newTime == null) {
             // timepicker input has an 'X' that when clicked
             // passes in null so reset the Date() to current time
             setDateTime(new Date())
-            setEpochTime(epoch(new Date()))
+            setEpochTime(dateToEpoch(new Date()))
         }
         else {
             setDateTime(newTime)
-            setEpochTime(epoch(newTime))   
+            setEpochTime(dateToEpoch(newTime))   
         }
     }
 
