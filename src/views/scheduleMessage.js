@@ -1,6 +1,7 @@
 import './scheduleMessage.css';
 
-import MessageInput from '../components/messageInput/messageInput'
+import MessageInput from '../components/messageInput/messageInput';
+import TimePicker from '../components/timepicker/timePicker'
 import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
 
@@ -32,6 +33,9 @@ function ScheduleMessage() {
     return (
         <div>
             <h1>Schedule message</h1>
+            <div className="datepicker-container">
+                <TimePicker initialValue={new Date()}/>
+            </div>
             <input ref={timeInput} placeholder="Epoch time"/>
             <MessageInput submitAction={scheduleMessage} />
             <h3>Scheduled Messages</h3>
