@@ -34,7 +34,7 @@ function ScheduleMessage() {
         <div>
             <h1>Schedule message</h1>
             <div className="datepicker-container">
-                <TimePicker initialValue={new Date()}/>
+                <TimePicker />
             </div>
             <input ref={timeInput} placeholder="Epoch time"/>
             <MessageInput submitAction={scheduleMessage} />
