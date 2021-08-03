@@ -7,7 +7,7 @@ import { useState } from 'react';
 function epoch (date) {
     const timeInEpochMilliseconds = Date.parse(date)
 
-    // return epoch time in minutes for Slack API
+    // return epoch time in seconds for Slack API
     return timeInEpochMilliseconds / 1000
 }
 
@@ -18,8 +18,16 @@ function TimePicker() {
     const [epochTime, setEpochTime] = useState(epoch(new Date()))
 
     const updateTime = (newTime) => {
-        setDateTime(newTime)
-        setEpochTime(epoch(newTime))
+        if (newTime == null) {
+            // timepicker input has an 'X' that when clicked
+            // passes in null so reset the Date() to current time
+            setDateTime(new Date())
+            setEpochTime(epoch(new Date()))
+        }
+        else {
+            setDateTime(newTime)
+            setEpochTime(epoch(newTime))   
+        }
     }
 
     return (
