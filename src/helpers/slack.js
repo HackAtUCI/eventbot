@@ -1,6 +1,9 @@
 class SlackClient {
     constructor(webclient) {
         this.slackClient = webclient;
+        
+        // Remove User-Agent Header since it causes a CORS error on Safari and Firefox
+        delete this.slackClient["axios"].defaults.headers["User-Agent"];
     }
 
     /**
