@@ -8,22 +8,21 @@ import {useEffect, useState} from 'react';
 import NavBar from './components/navbar/navbar';
 import AppContext from './AppContext';
 import TokenInput from './components/tokenInput/tokenInput';
-import SlackClient from './helpers/slack';
+import slackClient from './helpers/slack';
+
 import SendMessage from './views/sendMessage';
 import Home from './views/home';
 import ScheduleMessage from './views/scheduleMessage';
 import EditMessage from './views/editMessage';
 
-const { WebClient } = require('@slack/web-api');
 
 function App() {
   const [token, setToken] = useState(localStorage['slackToken']);
   const [isLoading, setIsLoading] = useState(true);
-  const [slackClient, setSlackClient] = useState();
-  const [workspace, setWorkspace] = useState(); 
+  const [workspace, setWorkspace] = useState();
   const history = useHistory();
   const location = useLocation();
-  
+
   useEffect(() => {
     if (token) {
       // Save Slack token to local storage for future use
@@ -49,12 +48,10 @@ function App() {
   // If token is invalid, an alert will be shown
   const login = async () => {
     try {
-      // Create WebClient to interface with Slack API
-      const slackClient = new SlackClient(new WebClient(token)); 
-      await slackClient.init()
+      // Initialize Slack client with the token
+      await slackClient.init(token)
 
       // Update the states
-      setSlackClient(slackClient)
       setWorkspace(await slackClient.loadWorkspace());
       setIsLoading(false);
 
@@ -77,7 +74,7 @@ function App() {
 
   return (
     <div className="App">
-      <AppContext.Provider value={{slackClient, workspace, isLoading}}>
+      <AppContext.Provider value={{ workspace, isLoading }}>
         <NavBar onLogout={logout}/>
         <div className="content">
           <Route exact path="/" component={Home} />

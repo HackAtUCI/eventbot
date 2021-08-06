@@ -3,9 +3,10 @@ import './scheduleMessage.css';
 import MessageTable from '../components/messageTable/messageTable';
 import { useContext, useEffect, useState } from 'react';
 import AppContext from '../AppContext';
+import slackClient from '../helpers/slack';
 
 function EditMessage() {
-    const {slackClient, isLoading} = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [prevMessages, setPrevMessages] = useState([]);
     
     useEffect(()=>{
