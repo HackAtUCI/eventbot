@@ -8,13 +8,15 @@ import slackClient from '../helpers/slack';
 
 
 function ScheduleMessage() {
-    const { isLoading } = useContext(AppContext);
+    const { workspace } = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
     const timeInput = useRef(null)
     
-    useEffect(()=>{
-        if (!isLoading) {loadScheduledMessages()};
-    }, [isLoading])
+    useEffect(() => {
+      if (workspace) {
+        loadScheduledMessages();
+      }
+    }, [workspace]);
 
     const loadScheduledMessages = () => {
         slackClient.getScheduledMessages().then(messages => {

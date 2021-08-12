@@ -6,12 +6,14 @@ import AppContext from '../AppContext';
 import slackClient from '../helpers/slack';
 
 function EditMessage() {
-    const { isLoading } = useContext(AppContext);
+    const { workspace } = useContext(AppContext);
     const [prevMessages, setPrevMessages] = useState([]);
-    
-    useEffect(()=>{
-        if (!isLoading) {loadPrevMessages()};
-    }, [isLoading])
+
+    useEffect(() => {
+      if (workspace) {
+        loadPrevMessages();
+      }
+    }, [workspace]);
 
     const loadPrevMessages = () => {
         slackClient.loadLog().then(messages => {
