@@ -99,6 +99,21 @@ class SlackClient {
     }
 
     /**
+     * Update Scheduled Message
+     * There is no slack api to update a scheduled message. 
+     * Instead we must delete the old message a schedule a new one at the same timestamp.
+     * 
+     * @param {string} scheduled_message_id - id of the scheduled message
+     * @param {string} channel              - channel id of the message
+     * @param {string} updated_text         - updated text to send
+     * @param {string} post_at              - epoch timestamp to send the message at
+     */
+    async updateScheduledMessage(scheduled_message_id, channel, updated_text, post_at) {
+        await this.deleteScheduledMessage(scheduled_message_id, channel);
+        await this.scheduleMessage(updated_text, channel, post_at);
+    }
+
+    /**
      * Get Scheduled Messages
      * 
      * @returns a list of scheduled messages

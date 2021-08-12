@@ -3,9 +3,10 @@ import './scheduleMessage.css';
 import MessageInput from '../components/messageInput/messageInput'
 import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
+import MessageTable from '../components/messageTable/messageTable';
 
 function ScheduleMessage() {
-    const {slackClient, workspace, isLoading} = useContext(AppContext);
+    const {slackClient, isLoading} = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
     const timeInput = useRef(null)
     
@@ -15,7 +16,21 @@ function ScheduleMessage() {
 
     const loadScheduledMessages = () => {
         slackClient.getScheduledMessages().then(messages => {
-            setScheduledMessages(messages);
+            // The list of messages needs to match the structure of messages from slackClient.loadLog()
+            // This map reformats the messages accordingly. The scheduled message id is used as the "log_ts".
+            // I realize isn't ideal... maybe we should rework this? 
+            const formattedMessages = messages.map(message => {
+                return {
+                    messageDetails: {
+                        channel: message.channel_id,
+                        ts: message.post_at,
+                        text: message.text
+                    },
+                    log_ts: message.id
+                }
+            });
+
+            setScheduledMessages(formattedMessages);
         })
     }
 
@@ -24,8 +39,14 @@ function ScheduleMessage() {
         loadScheduledMessages();
     }
 
-    const deleteMessage = async (messageId, channelId) => {
-        await slackClient.deleteScheduledMessage(messageId, channelId);
+    const updateMessage = async (oldMessageDetails, updatedText) => {
+        const {messageDetails: {channel, ts}, log_ts } = oldMessageDetails;
+        await slackClient.updateScheduledMessage(log_ts, channel, updatedText, ts);
+    }
+
+    const deleteMessage = async (oldMessageDetails) => {
+        const {messageDetails: {channel}, log_ts } = oldMessageDetails;
+        await slackClient.deleteScheduledMessage(log_ts, channel);
         loadScheduledMessages();
     }
 
@@ -35,30 +56,12 @@ function ScheduleMessage() {
             <input ref={timeInput} placeholder="Epoch time"/>
             <MessageInput submitAction={scheduleMessage} />
             <h3>Scheduled Messages</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <th>ID</th>
-                    <th>Channel</th>
-                    <th>Post At</th>
-                    <th>Text</th>
-                    <th>Delete Message</th>
-                </tr>
-                {scheduledMessages.map(message => {
-                    const {id, channel_id, post_at, text} = message;
-
-                    return (
-                        <tr key={id}>
-                            <td>{id}</td>
-                            <td>#{workspace && workspace.channels[channel_id].name}</td>
-                            <td>{post_at}</td>
-                            <td><pre>{text}</pre></td>
-                            <td><button onClick={()=>{deleteMessage(id, channel_id)}}>Delete</button></td>
-                        </tr>
-                    )
-                })}        
-                </tbody>       
-            </table>
+            <MessageTable
+                messages={scheduledMessages}
+                onUpdateMessage={updateMessage}
+                onDeleteMessage={deleteMessage}
+                showIdCol={true}
+            />
         </div>
     );
 }
