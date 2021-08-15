@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/eventbot/static/css/main.3990eae5.chunk.css",
-    "main.js": "/eventbot/static/js/main.57078118.chunk.js",
-    "main.js.map": "/eventbot/static/js/main.57078118.chunk.js.map",
+    "main.js": "/eventbot/static/js/main.f12dc0cb.chunk.js",
+    "main.js.map": "/eventbot/static/js/main.f12dc0cb.chunk.js.map",
     "runtime-main.js": "/eventbot/static/js/runtime-main.202c8da6.js",
     "runtime-main.js.map": "/eventbot/static/js/runtime-main.202c8da6.js.map",
-    "static/js/2.d7433caf.chunk.js": "/eventbot/static/js/2.d7433caf.chunk.js",
-    "static/js/2.d7433caf.chunk.js.map": "/eventbot/static/js/2.d7433caf.chunk.js.map",
+    "static/js/2.074bc5b3.chunk.js": "/eventbot/static/js/2.074bc5b3.chunk.js",
+    "static/js/2.074bc5b3.chunk.js.map": "/eventbot/static/js/2.074bc5b3.chunk.js.map",
     "index.html": "/eventbot/index.html",
     "static/css/main.3990eae5.chunk.css.map": "/eventbot/static/css/main.3990eae5.chunk.css.map",
-    "static/js/2.d7433caf.chunk.js.LICENSE.txt": "/eventbot/static/js/2.d7433caf.chunk.js.LICENSE.txt"
+    "static/js/2.074bc5b3.chunk.js.LICENSE.txt": "/eventbot/static/js/2.074bc5b3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.202c8da6.js",
-    "static/js/2.d7433caf.chunk.js",
+    "static/js/2.074bc5b3.chunk.js",
     "static/css/main.3990eae5.chunk.css",
-    "static/js/main.57078118.chunk.js"
+    "static/js/main.f12dc0cb.chunk.js"
   ]
 }
