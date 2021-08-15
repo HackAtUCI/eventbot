@@ -8,7 +8,7 @@ import AppContext from '../AppContext';
 function ScheduleMessage() {
     const {slackClient, workspace, isLoading} = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
-    const timeInput = useRef(null)
+    const [timeInput, setTimeInput] = useState(null)
     
     useEffect(()=>{
         if (!isLoading) {loadScheduledMessages()};
@@ -21,7 +21,7 @@ function ScheduleMessage() {
     }
 
     const scheduleMessage = async (message, channel) => {
-        await slackClient.scheduleMessage(message, channel, timeInput.current.value);
+        await slackClient.scheduleMessage(message, channel, timeInput);
         loadScheduledMessages();
     }
 
@@ -34,9 +34,9 @@ function ScheduleMessage() {
         <div>
             <h1>Schedule message</h1>
             <div className="datepicker-container">
-                <TimePicker />
+                <TimePicker setParentTimeInput={setTimeInput}/>
             </div>
-            <input ref={timeInput} placeholder="Epoch time"/>
+            
             <MessageInput submitAction={scheduleMessage} />
             <h3>Scheduled Messages</h3>
             <table>

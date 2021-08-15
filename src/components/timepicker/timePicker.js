@@ -13,7 +13,7 @@ function dateToEpoch (date) {
 
 // Datetime input using 
 // React Widgets DatePicker and TimePicker
-function TimePicker() {
+function TimePicker(props) {
     const [dateTime, setDateTime] = useState(new Date())
     const [epochTime, setEpochTime] = useState(dateToEpoch(new Date()))
 
@@ -24,8 +24,10 @@ function TimePicker() {
             setEpochTime(dateToEpoch(new Date()))
         }
         else {
+            const timeToEpoch = dateToEpoch(newTime);
             setDateTime(newTime)
-            setEpochTime(dateToEpoch(newTime))   
+            setEpochTime(timeToEpoch)
+            props.setParentTimeInput(timeToEpoch)
         }
     }
 
