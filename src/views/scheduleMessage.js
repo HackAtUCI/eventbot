@@ -4,9 +4,11 @@ import MessageInput from '../components/messageInput/messageInput'
 import { useContext, useEffect, useRef, useState } from 'react';
 import AppContext from '../AppContext';
 import MessageTable from '../components/messageTable/messageTable';
+import slackClient from '../helpers/slack';
+
 
 function ScheduleMessage() {
-    const {slackClient, isLoading} = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
     const timeInput = useRef(null)
     

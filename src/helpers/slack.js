@@ -1,24 +1,30 @@
-class SlackClient {
-    constructor(webclient) {
-        this.slackClient = webclient;
-        
-        // Remove User-Agent Header since it causes a CORS error on Safari and Firefox
-        delete this.slackClient["axios"].defaults.headers["User-Agent"];
-    }
+import { WebClient } from "@slack/web-api";
 
+class SlackClient {
     /**
      * Initializer
      * This function must be called after constructing a new object.
      *
      * Afterwards, the following attributes are loaded on the SlackClient
+     *  slackClient - the Slack WebClient used to communicate with the Web API
      *  userId      - Bot's ID, used to send DMs to the Bot's channel.
      *  logChannel  - Channel ID for the bot's log 
      */
-    async init() {
+    async init(token) {
+        // Create WebClient to interface with Slack API
+        this.slackClient = new WebClient(token);
+
+        // Remove User-Agent Header since it causes a CORS error on Safari and Firefox
+        delete this.slackClient["axios"].defaults.headers["User-Agent"];
+
         const botInfo = await this.validateToken();
         this.userId = botInfo.user_id;
 
         this.logChannel = await this._getLogChannel();
+    }
+
+    logout() {
+        delete this.slackClient;
     }
 
     /**
@@ -269,4 +275,5 @@ class SlackClient {
     }
 }
 
-export default SlackClient;
+const slackClient = new SlackClient();
+export default slackClient;

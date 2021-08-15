@@ -1,10 +1,9 @@
+import React from "react";
 import MessageInput from '../components/messageInput/messageInput'
-import AppContext from '../AppContext';
-import {useContext} from 'react';
+
+import slackClient from '../helpers/slack';
 
 function SendMessage() {
-    const { slackClient } = useContext(AppContext);
-
     const sendMessage = (message, channel) => {
         slackClient.postMessage(message, channel);
     }
