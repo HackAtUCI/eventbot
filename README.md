@@ -4,7 +4,7 @@ Web interface to control a custom Slack App.
 ## Local Development
 
 ### Getting Setup
-- `git clone https://github.com/ChaseC99/eventbot.git`
+- `git clone https://github.com/hackuci/eventbot.git`
 - `cd eventbot`  
 - `npm install`  
 
