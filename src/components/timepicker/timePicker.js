@@ -5,13 +5,13 @@ import TimeInput from 'react-widgets/TimeInput';
 import { useState } from 'react';
 
 function dateToEpoch (date) {
-    const timeInEpochMilliseconds = Date.parse(date)
+    const timeInEpochSeconds = Date.parse(date)
 
-    // return epoch time in seconds for Slack API
-    return timeInEpochMilliseconds / 1000
+    // return epoch time in seconds
+    return timeInEpochSeconds / 1000
 }
 
-// Date and time input using 
+// Datetime input using 
 // React Widgets DatePicker and TimePicker
 function TimePicker() {
     const [dateTime, setDateTime] = useState(new Date())
