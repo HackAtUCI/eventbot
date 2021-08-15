@@ -23,8 +23,8 @@ function TimePicker(props) {
     const updateTime = (newTime) => {
         if (newTime == null || isNaN(newTime)) {
             // handles invalid input from datepicker and timeinput
-            setDateTime(new Date())
-            setEpochTime(dateToEpoch(new Date()))
+            setDateTime(currentDate)
+            setEpochTime(dateToEpoch(currentDate))
         }
         else {
             const timeToEpoch = dateToEpoch(newTime);
