@@ -14,8 +14,11 @@ function dateToEpoch (date) {
 // Datetime input using 
 // React Widgets DatePicker and TimePicker
 function TimePicker(props) {
-    const [dateTime, setDateTime] = useState(new Date())
-    const [epochTime, setEpochTime] = useState(dateToEpoch(new Date()))
+    const currentDate = new Date();
+    currentDate.setSeconds(0);
+
+    const [dateTime, setDateTime] = useState(currentDate)
+    const [epochTime, setEpochTime] = useState(dateToEpoch(currentDate))
 
     const updateTime = (newTime) => {
         if (newTime == null || isNaN(newTime)) {
