@@ -45,6 +45,8 @@ function TimePicker(props) {
 
             <TimeInput
                 value={dateTime}
+                precision="seconds"
+                use12HourClock={true}
                 onChange={newTime => updateTime(newTime)}
             />
 
