@@ -1,7 +1,8 @@
 import './scheduleMessage.css';
 
-import MessageInput from '../components/messageInput/messageInput'
-import { useContext, useEffect, useRef, useState } from 'react';
+import MessageInput from '../components/messageInput/messageInput';
+import TimePicker from '../components/timepicker/timePicker'
+import { useContext, useEffect, useState } from 'react';
 import AppContext from '../AppContext';
 import MessageTable from '../components/messageTable/messageTable';
 import slackClient from '../helpers/slack';
@@ -10,7 +11,7 @@ import slackClient from '../helpers/slack';
 function ScheduleMessage() {
     const { isLoading } = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
-    const timeInput = useRef(null)
+    const [timestamp, setTimestamp] = useState(null)
     
     useEffect(()=>{
         if (!isLoading) {loadScheduledMessages()};
@@ -37,7 +38,7 @@ function ScheduleMessage() {
     }
 
     const scheduleMessage = async (message, channel) => {
-        await slackClient.scheduleMessage(message, channel, timeInput.current.value);
+        await slackClient.scheduleMessage(message, channel, timestamp);
         loadScheduledMessages();
     }
 
@@ -55,7 +56,10 @@ function ScheduleMessage() {
     return (
         <div>
             <h1>Schedule message</h1>
-            <input ref={timeInput} placeholder="Epoch time"/>
+            <div className="datepicker-container">
+                <TimePicker setParentTimestamp={setTimestamp}/>
+            </div>
+
             <MessageInput submitAction={scheduleMessage} />
             <h3>Scheduled Messages</h3>
             <MessageTable
