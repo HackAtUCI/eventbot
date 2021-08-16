@@ -50,7 +50,7 @@ function TimePicker(props) {
                 onChange={newTime => updateTime(newTime)}
             />
 
-            <h3>{epochTime}</h3>
+            <h4>Timestamp: {epochTime}</h4>
         </>
     )
 }
