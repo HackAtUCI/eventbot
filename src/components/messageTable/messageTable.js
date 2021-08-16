@@ -35,6 +35,7 @@ function MessageTable(props) {
             <tr key={log_ts}>
                 {showIdCol && <td>{log_ts}</td>}
                 <td>#{workspace && workspace.channels[channel].name}</td>
+                <td>{new Date(ts*1000).toLocaleString()}</td>
                 <td>{ts}</td>
                 <td>
                     <textarea 
@@ -64,6 +65,7 @@ function MessageTable(props) {
                 <tr>
                     {showIdCol && <th>Id</th>}
                     <th>Channel</th>
+                    <th>Datetime</th>
                     <th>Timestamp</th>
                     <th>Text</th>
                     <th>Edit</th>
