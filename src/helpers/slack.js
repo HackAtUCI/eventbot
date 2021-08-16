@@ -122,11 +122,16 @@ class SlackClient {
     /**
      * Get Scheduled Messages
      * 
-     * @returns a list of scheduled messages
+     * @returns a list of scheduled messages sorted by timestamp
      */
     async getScheduledMessages() {
         const resp = await this.slackClient.chat.scheduledMessages.list();
-        return resp.scheduled_messages;
+
+        // Sort the scheduled messages by post_at time
+        // Earliest messages will appear first
+        const scheduledMessages = resp.scheduled_messages.sort((m1, m2) => m1.post_at-m2.post_at);
+
+        return scheduledMessages;
     }
 
     /**
