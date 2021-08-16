@@ -30,7 +30,7 @@ function TimePicker(props) {
             const timeToEpoch = dateToEpoch(newTime);
             setDateTime(newTime)
             setEpochTime(timeToEpoch)
-            props.setParentTimeInput(timeToEpoch)
+            props.setParentTimestamp(timeToEpoch)
         }
     }
 
