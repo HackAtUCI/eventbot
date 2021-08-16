@@ -8,7 +8,7 @@ import AppContext from '../AppContext';
 function ScheduleMessage() {
     const {slackClient, workspace, isLoading} = useContext(AppContext);
     const [scheduledMessages, setScheduledMessages] = useState([]);
-    const [timeInput, setTimeInput] = useState(null)
+    const [setTimestamp, setTimestamp] = useState(null)
     
     useEffect(()=>{
         if (!isLoading) {loadScheduledMessages()};
