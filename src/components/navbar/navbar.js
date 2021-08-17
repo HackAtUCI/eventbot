@@ -4,8 +4,7 @@ import {NavLink} from 'react-router-dom';
 import { useContext } from 'react';
 import AppContext from '../../AppContext';
 
-function NavBar(props) {
-  const { onLogout } = props;
+function NavBar({ onLogout }) {
   const { workspace } = useContext(AppContext)
 
   return (
