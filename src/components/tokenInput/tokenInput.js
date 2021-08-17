@@ -13,6 +13,7 @@ function TokenInput({ login }) {
     if (!valid) {
       setTokenValid(false);
       setLoading(false);
+      alert(`Invalid token: ${token}`);
     }
   };
 
