@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/eventbot/static/css/main.a1b1b2ab.chunk.css",
-    "main.js": "/eventbot/static/js/main.97fd1a6c.chunk.js",
-    "main.js.map": "/eventbot/static/js/main.97fd1a6c.chunk.js.map",
+    "main.css": "/eventbot/static/css/main.89ba6249.chunk.css",
+    "main.js": "/eventbot/static/js/main.423cb99a.chunk.js",
+    "main.js.map": "/eventbot/static/js/main.423cb99a.chunk.js.map",
     "runtime-main.js": "/eventbot/static/js/runtime-main.202c8da6.js",
     "runtime-main.js.map": "/eventbot/static/js/runtime-main.202c8da6.js.map",
     "static/css/2.cbdb4ac4.chunk.css": "/eventbot/static/css/2.cbdb4ac4.chunk.css",
-    "static/js/2.b1269526.chunk.js": "/eventbot/static/js/2.b1269526.chunk.js",
-    "static/js/2.b1269526.chunk.js.map": "/eventbot/static/js/2.b1269526.chunk.js.map",
+    "static/js/2.8b19fabb.chunk.js": "/eventbot/static/js/2.8b19fabb.chunk.js",
+    "static/js/2.8b19fabb.chunk.js.map": "/eventbot/static/js/2.8b19fabb.chunk.js.map",
     "index.html": "/eventbot/index.html",
     "static/css/2.cbdb4ac4.chunk.css.map": "/eventbot/static/css/2.cbdb4ac4.chunk.css.map",
-    "static/css/main.a1b1b2ab.chunk.css.map": "/eventbot/static/css/main.a1b1b2ab.chunk.css.map",
-    "static/js/2.b1269526.chunk.js.LICENSE.txt": "/eventbot/static/js/2.b1269526.chunk.js.LICENSE.txt"
+    "static/css/main.89ba6249.chunk.css.map": "/eventbot/static/css/main.89ba6249.chunk.css.map",
+    "static/js/2.8b19fabb.chunk.js.LICENSE.txt": "/eventbot/static/js/2.8b19fabb.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.202c8da6.js",
     "static/css/2.cbdb4ac4.chunk.css",
-    "static/js/2.b1269526.chunk.js",
-    "static/css/main.a1b1b2ab.chunk.css",
-    "static/js/main.97fd1a6c.chunk.js"
+    "static/js/2.8b19fabb.chunk.js",
+    "static/css/main.89ba6249.chunk.css",
+    "static/js/main.423cb99a.chunk.js"
   ]
 }
