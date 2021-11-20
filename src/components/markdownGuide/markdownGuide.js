@@ -8,6 +8,7 @@ const markdownInfo = [
   ["```multiline code block```", '<pre>multiline code block</pre>'],
   [">quote", "<blockquote>quote</blockquote>"],
   ["<url|link example>", "<a href=''>link example</a>"],
+  ["<!channel>", "<strong>@channel</strong>"],
 
 ]
 
