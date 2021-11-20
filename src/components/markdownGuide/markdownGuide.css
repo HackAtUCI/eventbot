@@ -1,0 +1,23 @@
+#md-guide {
+    margin-top: 100px;
+}
+
+code {
+    font-family: Consolas,"courier new";
+    color: crimson;
+    background-color: #f1f1f1;
+    border-radius: 10%;
+    padding: 0 5px;
+}
+
+pre {
+    background-color: #f1f1f1;
+    border-radius: 10%;
+    border:solid rgb(150, 150, 150) 1px;
+}
+
+blockquote {
+    border-left: solid rgb(150, 150, 150);
+    padding: 5px;
+    text-align: left;
+}
