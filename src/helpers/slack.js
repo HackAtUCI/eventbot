@@ -36,7 +36,7 @@ class SlackClient {
      * @returns the response from the Slack API call
      */
     async postMessage(message, channel, log=true) {
-        const resp = await this.slackClient.chat.postMessage({ text: message, channel: channel }).catch((err) => {
+        const resp = await this.slackClient.chat.postMessage({ text: message, channel: channel, link_names: true}).catch((err) => {
             console.error(err, {channel, message});
             alert(err + "\n\nSee the full error message in the console.");
         })
@@ -85,7 +85,7 @@ class SlackClient {
      * @param {string} post_at  - epoch timestamp to send the message at
      */
     async scheduleMessage(text, channel, post_at) {
-        await this.slackClient.chat.scheduleMessage({ channel, text, post_at }).catch((err) => {
+        await this.slackClient.chat.scheduleMessage({ channel, text, post_at, link_names: true }).catch((err) => {
             console.error(err, {channel, text, post_at});
             alert('Unable to schedule message. Review the error message in the console.');
         })
