@@ -16,6 +16,7 @@ oauth_config:
       - chat:write.public
       - emoji:read
       - files:write
+      - groups:read
       - im:history
       - im:write
       - links:write

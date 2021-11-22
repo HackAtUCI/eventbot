@@ -255,7 +255,7 @@ class SlackClient {
         const [channels, team] = await Promise.all([
             // Load channels from Slack Workspace
             // Set selected channel to the first channel in the list
-            this.slackClient.conversations.list()
+            this.slackClient.conversations.list({types: "public_channel, private_channel"})
                 .then(result => {
                     const channels = result.channels
                     .map(channel => ({id: channel.id, name: channel.name}))
